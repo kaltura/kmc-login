@@ -83,9 +83,22 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 			"width", "${width}",
 			"height", "${height}",
 			"align", "middle",
-			"flashvars", "urchinNumber=UA-12055206-1" + 
+			"flashvars", 
+						// google tracking id
+						"urchinNumber=UA-12055206-1" + 
+						
+						// work with this server
 						"&host=kaldev.kaltura.com" + 
+	 
+						// services url:
+					 	 "&srvurl=api_v3/index.php" +
+						
+						// set-initial-password code
+					 	//"&hashKey=atar" +
+	
+						// show sign up link button:
 						"&visibleSignup=true",
+	
 			"id", "${application}",
 			"quality", "high",
 			"bgcolor", "${bgcolor}",

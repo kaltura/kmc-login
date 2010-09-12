@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" layout="absolute"
 				preloader="com.kaltura.preloaders.KmcPreloader" backgroundColor="#034F57" horizontalScrollPolicy="off"
-				verticalScrollPolicy="off" backgroundAlpha="0" backgroundGradientAlphas="0,0">
+				verticalScrollPolicy="off" backgroundAlpha="0" backgroundGradientAlphas="0,0"
+				xmlns:components="com.pfp.components.*">
 
 	<mx:Script>
 		<![CDATA[
@@ -18,9 +19,9 @@
 			import com.kaltura.utils.KUtils;
 			import com.kaltura.utils.SoManager;
 			import com.kaltura.vo.KalturaStatsKmcEvent;
-			
+
 			import flash.external.ExternalInterface;
-			
+
 			import mx.controls.Alert;
 			import mx.core.UITextField;
 			import mx.events.ValidationResultEvent;
@@ -110,7 +111,7 @@
 				// new user / existing user?
 				if (parameters.hashKey != null) {
 					_hashKey = parameters.hashKey;
-					panels.selectedChild = newPwdPanel;
+					panels.selectedSide = 'Top';
 				}
 			}
 
@@ -137,7 +138,7 @@
 				params.password = password.text;
 				loginSrv.send(params);
 
-//TODO for API_V3
+// for API_V3
 //				var aul:AdminUserLogin = new AdminUserLogin(email.text, password.text);
 //				aul.addEventListener(KalturaEvent.COMPLETE, onLoginResult);
 //				aul.addEventListener(KalturaEvent.FAILED, onLoginFault);
@@ -145,13 +146,17 @@
 			}
 
 
+			/**
+			 * validate both pwds are present and equal and call
+			 * the setInitialPassword service.
+			 * */
 			protected function setInitialPwd():void {
 				//TODO track analytics?
-				
+
 				// validate
 				if (pwd1.text != pwd2.text) {
 					return;
-					//TODO say something
+						//TODO say something
 				}
 				if (!validateTextField(pwd1, resourceManager.getString('kmc', 'enterPassword'), passwordValidator)) {
 					return;
@@ -159,25 +164,23 @@
 				if (!validateTextField(pwd2, resourceManager.getString('kmc', 'enterPassword'), passwordValidator)) {
 					return;
 				}
-				
-				
+
 				// post request
 				var ausip:AdminUserSetInitialPwd = new AdminUserSetInitialPwd(_hashKey, pwd1.text);
 				ausip.addEventListener(KalturaEvent.COMPLETE, onSetInitialResult);
 				ausip.addEventListener(KalturaEvent.FAILED, faultHandlerV3);
 				_kc.post(ausip);
-				
 			}
 
 
-			private function removeMe():void {
-				ExternalInterface.call(_closeF);
-			}
+//			private function removeMe():void {
+//				ExternalInterface.call(_closeF);
+//			}
 
-
-			private function loginF(partner_id:String, subp_id:String, uid:String, ks:String, screenName:String, uemail:String):void
-
-			{
+			/**
+			 * log the login event and call relevant JS function
+			 * */
+			private function loginF(partner_id:String, subp_id:String, uid:String, ks:String, screenName:String, uemail:String):void {
 				SoManager.getInstance().getLocalData("login", uid);
 
 				if (!SoManager.getInstance().checkOrFlush(GoogleAnalyticsConsts.LOGIN_FIRST_TIME)) {
@@ -188,6 +191,12 @@
 			}
 
 
+			/**
+			 * make sure the text in a text field is valid.
+			 * @param target	UITextField or TextInput
+			 * @param defaultString		the default text for the given TF
+			 * @param validator		the validator to use with this TF.
+			 * */
 			private function validateTextField(target:Object, defaultString:String, validator:Validator):Boolean {
 				cleanField(target, defaultString);
 				validator.source = target;
@@ -198,6 +207,11 @@
 
 
 
+			/**
+			 * if the text in a TF is its default text, remove the contents.
+			 * @param textField		UITextField or TextInput
+			 * @param defaultText	the default text for this TF.
+			 * */
 			private function cleanField(textField:Object, defaultText:String):void {
 				//TestInput is not related to TextArea
 				if (textField is UITextField || textField is TextInput) {
@@ -230,13 +244,14 @@
 				var params:Object = new Object();
 				params.email = email2.text;
 				resetPasswordSrv.send(params);
+				//TODO make V3
 			}
 
 
 			/**
 			 * login successful - call JS function with relevant data
 			 * */
-			private function onLoginResult(event:ResultEvent):void {
+			private function onLoginSuccess(event:ResultEvent):void {
 				if (event.result.result.hasOwnProperty('ks')) {
 					loginF(event.result.result.partner_id, event.result.result.subp_id, event.result.result.uid, event.result.result.ks, event.result.result.screenName, event.result.result.email);
 				}
@@ -246,13 +261,14 @@
 					}
 				}
 			}
-			
+
+
 			/**
-			 * set intial password successfull
+			 * set intial password successfull </br>
 			 * show normal login panel
 			 * */
 			protected function onSetInitialResult(event:KalturaEvent):void {
-				panels.selectedChild = loginPanel;
+				panels.selectedSide = "Left";
 			}
 
 
@@ -263,7 +279,7 @@
 				//TODO show a message from locale
 				Alert.show(event.error.errorMsg);
 			}
-			
+
 
 			/**
 			 * general fault handler for PS2
@@ -273,6 +289,9 @@
 			}
 
 
+			/**
+			 * tell the user if password reset went ok or not.
+			 * */
 			private function onResetPassResult(event:ResultEvent):void {
 				if (event.result.error.hasOwnProperty('num_0'))
 					Alert.show(event.result.error.num_0.desc);
@@ -286,21 +305,28 @@
 			 * hide / show forget password panel
 			 * */
 			protected function toggleForgotPassword():void {
-				if (panels.selectedChild == forgetPwdPanel) {
-					panels.selectedChild = loginPanel;
+				if (panels.selectedSide == "Left") {
+					panels.selectedSide = "Front";
 				}
 				else {
-					panels.selectedChild = forgetPwdPanel;
+					panels.selectedSide = "Left";
 				}
 			}
 
 
+
+			/**
+			 * remove the default text from a TF and make it show '*'
+			 * */
 			protected function removeDefaultText(event:FocusEvent):void {
 				cleanField(event.target as UITextField, resourceManager.getString('kmc', 'enterPassword'));
 				password.displayAsPassword = true;
 			}
 
 
+			/**
+			 * restore the default text to a password TF.
+			 * */
 			protected function resetDefaultText(event:FocusEvent):void {
 				restoreField(event.target, resourceManager.getString('kmc', 'enterPassword'));
 				if (password.text == resourceManager.getString('kmc', 'enterPassword') || password.text == '') {
@@ -320,22 +346,22 @@
 	<mx:StringValidator id="passwordValidator" required="true" property="text" minLength="1" maxLength="200"/>
 	<mx:EmailValidator id="emailValidator" required="true" property="text"/>
 
-	<!-- services -->
+	<!-- PS2 services -->
 	<mx:HTTPService id="loginSrv" url="{_domain}/{KALTURA_SERVICES_URL}/adminlogin" method="POST" resultFormat="e4x"
-					showBusyCursor="true" result="onLoginResult( event )" fault="faultHandler( event )"/>
+					showBusyCursor="true" result="onLoginSuccess( event )" fault="faultHandler( event )"/>
 
 	<mx:HTTPService id="resetPasswordSrv" url="{_domain}/{KALTURA_SERVICES_URL}/resetadminpassword" method="POST"
 					resultFormat="e4x" showBusyCursor="true" result="onResetPassResult( event )"
 					fault="faultHandler( event )"/>
 
 	<!-- UI -->
-	<mx:TitleWindow id="loginWin" width="380" height="220" horizontalScrollPolicy="off" verticalScrollPolicy="off"
-					title="{resourceManager.getString('kmc', 'login')}" horizontalCenter="0" verticalCenter="0"
-					showCloseButton="false" keyDown="{if(event.keyCode == Keyboard.ENTER)adminLogin();}">
+	<components:CubeStack id="panels" width="380" height="220" horizontalCenter="0" verticalCenter="0" 
+						  horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+		<!-- login details -->
+		<mx:TitleWindow title="{resourceManager.getString('kmc', 'login')}" showCloseButton="false"
+						keyDown="{if(event.keyCode == Keyboard.ENTER)adminLogin();}" name="Front">
 
-		<mx:ViewStack id="panels" width="100%" height="100%">
-			<!-- login details -->
-			<mx:VBox id="loginPanel" width="100%" height="100%">
+			<mx:VBox width="100%" height="100%" >
 				<mx:HBox>
 					<mx:Label width="{LBL_WIDTH}" text="{resourceManager.getString('kmc', 'email')}:"/>
 					<mx:TextInput id="email"
@@ -352,9 +378,24 @@
 				<!-- remember me checkbox -->
 				<mx:CheckBox id="remember" label="{resourceManager.getString('kmc', 'rememberMe')}"/>
 			</mx:VBox>
+			<mx:ControlBar>
+				<mx:LinkButton label="{resourceManager.getString('kmc', 'forgotPassword')}"
+							   click="toggleForgotPassword()" buttonMode="true"/>
+				<mx:VRule height="10" visible="{Application.application.parameters.visibleSignup=='true'}"/>
+				<mx:LinkButton label="{resourceManager.getString('kmc', 'signup')}"
+							   click="{ExternalInterface.call('gotoSignup')}" buttonMode="true"
+							   visible="{Application.application.parameters.visibleSignup=='true'}"/>
+				<mx:Spacer width="100%"/>
+				<mx:Button label="{resourceManager.getString('kmc', 'login')}" buttonMode="true" click="adminLogin()"/>
+			</mx:ControlBar>
+		</mx:TitleWindow>
 
-			<!-- forgot password section -->
-			<mx:VBox id="forgetPwdPanel" width="100%" height="100%">
+		<!-- forgot password section -->
+		<mx:TitleWindow title="{resourceManager.getString('kmc', 'login')}" showCloseButton="false"
+						keyDown="{if(event.keyCode == Keyboard.ENTER)resetPassword();}" name="Left">
+
+
+			<mx:VBox width="100%" height="100%" >
 				<mx:Label text="{resourceManager.getString('kmc', 'forgotPassword')}"/>
 				<mx:Text id="forgotPwdTxt" width="95%"
 						 htmlText="{resourceManager.getString('kmc', 'forgotPasswordText')}"/>
@@ -366,9 +407,27 @@
 								  focusOut="{ restoreField( event.target , resourceManager.getString('kmc', 'enterEmail')) }"/>
 				</mx:HBox>
 			</mx:VBox>
+			<mx:ControlBar>
+				<mx:LinkButton label="{resourceManager.getString('kmc', 'forgotPassword')}"
+							   click="toggleForgotPassword()" buttonMode="true"/>
+				<mx:VRule height="10" visible="{Application.application.parameters.visibleSignup=='true'}"/>
+				<mx:LinkButton label="{resourceManager.getString('kmc', 'signup')}"
+							   click="{ExternalInterface.call('gotoSignup')}" buttonMode="true"
+							   visible="{Application.application.parameters.visibleSignup=='true'}"/>
+				<mx:Spacer width="100%"/>
+				<mx:Button label="{resourceManager.getString('kmc', 'send')}" buttonMode="true" 
+						   click="resetPassword()"/>
+			</mx:ControlBar>
+		</mx:TitleWindow>
 
-			<!-- new user (HBO) -->
-			<mx:VBox id="newPwdPanel" width="100%" height="100%">
+		<mx:VBox name="Back"/>
+		<mx:VBox name="Right"/>
+		
+		<!-- new user (HBO) -->
+		<mx:TitleWindow title="{resourceManager.getString('kmc', 'login')}" showCloseButton="false"
+						keyDown="{if(event.keyCode == Keyboard.ENTER)setInitialPwd();}" name="Top">
+
+			<mx:VBox width="100%" height="100%" >
 				<mx:HBox width="100%">
 					<mx:Label text="new password:" width="{LBL_WIDTH}"/>
 					<mx:TextInput id="pwd1" width="100%"/>
@@ -378,29 +437,13 @@
 					<mx:TextInput id="pwd2" width="100%"/>
 				</mx:HBox>
 			</mx:VBox>
+			<mx:ControlBar>
+				<mx:Spacer width="100%"/>
+				<mx:Button label="Submit" buttonMode="true" click="setInitialPwd()"/>
+			</mx:ControlBar>
+		</mx:TitleWindow>
+		
+		<mx:VBox name="Bottom"/>
+	</components:CubeStack>
 
-		</mx:ViewStack>
-
-
-		<!-- toolbar -->
-		<mx:ControlBar>
-			<mx:LinkButton label="{resourceManager.getString('kmc', 'forgotPassword')}"
-						   click="toggleForgotPassword()" buttonMode="true"/>
-			<mx:VRule height="10" visible="{Application.application.parameters.visibleSignup=='true'}"/>
-			<mx:LinkButton label="{resourceManager.getString('kmc', 'signup')}"
-						   click="{ExternalInterface.call('gotoSignup')}" buttonMode="true"
-						   visible="{Application.application.parameters.visibleSignup=='true'}"/>
-			<mx:Spacer width="100%"/>
-			<mx:Button label="{resourceManager.getString('kmc', 'login')}" buttonMode="true"
-					   click="adminLogin()" visible="{panels.selectedChild == loginPanel}"
-					   includeInLayout="{panels.selectedChild == loginPanel}"/>
-			<mx:Button label="{resourceManager.getString('kmc', 'send')}" buttonMode="true"
-					   click="resetPassword()" visible="{panels.selectedChild == forgetPwdPanel}"
-					   includeInLayout="{panels.selectedChild == forgetPwdPanel}"/>
-			<mx:Button label="Submit" buttonMode="true"
-					   click="setInitialPwd()" visible="{panels.selectedChild == newPwdPanel}"
-					   includeInLayout="{panels.selectedChild == newPwdPanel}"/>
-		</mx:ControlBar>
-	</mx:TitleWindow>
-	
 </mx:Application>
