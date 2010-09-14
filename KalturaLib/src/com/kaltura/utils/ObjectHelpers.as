@@ -39,7 +39,7 @@ package com.kaltura.utils
 
 		public static function getMD5Checksum(obj:Object, excludedProperties:Array = null):String
 		{
-			var objCopy:Object = ObjectUtil.copy(obj);
+			var objCopy:Object = mx.utils.ObjectUtil.copy(obj);
 			if (excludedProperties) removeProperties(objCopy, excludedProperties);
 
 			var propertiesList:Array = getPropertiesList(objCopy);
