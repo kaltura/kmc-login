@@ -11,10 +11,5 @@ package com.kaltura.delegates.data
 			super(call, config);
 		}
 
-		override public function parse( result : XML ) : *
-		{
-			return '';
-		}
-
 	}
 }

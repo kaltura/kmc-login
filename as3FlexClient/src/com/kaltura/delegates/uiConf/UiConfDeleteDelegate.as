@@ -11,10 +11,5 @@ package com.kaltura.delegates.uiConf
 			super(call, config);
 		}
 
-		override public function parse( result : XML ) : *
-		{
-			return '';
-		}
-
 	}
 }

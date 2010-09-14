@@ -13,5 +13,7 @@ package com.kaltura.types
 		public static const WMA : String = 'wma';
 		public static const ISMV : String = 'ismv';
 		public static const MKV : String = 'mkv';
+		public static const SWF : String = 'swf';
+		public static const PDF : String = 'pdf';
 	}
 }

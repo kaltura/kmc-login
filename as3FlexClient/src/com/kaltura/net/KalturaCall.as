@@ -4,6 +4,7 @@ package com.kaltura.net {
 	import com.kaltura.delegates.IKalturaCallDelegate;
 	import com.kaltura.errors.KalturaError;
 	import com.kaltura.events.KalturaEvent;
+	import com.kaltura.utils.ObjectUtil;
 	
 	import flash.events.EventDispatcher;
 	import flash.net.URLRequestMethod;
@@ -75,10 +76,11 @@ package com.kaltura.net {
 			var keyArray : Array = new Array();
 			var objArr : Array;
 			var objKeys : Array;
+			
 			if(obj["getUpdatedFieldsOnly"]())
 				objKeys = obj["getUpdateableParamKeys"]();
 			else
-				objKeys = obj["getParamKeys"]();
+				objKeys = ObjectUtil.getObjectAllKeys( obj );
 	
 			var j:int=0;
 			for (var i:int=0; i<objKeys.length; i++)

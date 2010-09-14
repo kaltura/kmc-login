@@ -29,6 +29,7 @@ package com.kaltura.types
 		public static const EMAIL_INGESTION : int = 26;
 		public static const METADATA_IMPORT : int = 27;
 		public static const METADATA_TRANSFORM : int = 28;
+		public static const FILESYNC_IMPORT : int = 29;
 		public static const PROJECT : int = 1000;
 	}
 }

@@ -11,5 +11,6 @@ package com.kaltura.types
 		public static const KRECORD : int = 7;
 		public static const PLAYER_V3 : int = 8;
 		public static const PLAYER_SL : int = 14;
+		public static const CLIENTSIDE_ENCODER : int = 15;
 	}
 }

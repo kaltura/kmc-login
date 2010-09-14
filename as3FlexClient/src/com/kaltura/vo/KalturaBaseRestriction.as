@@ -4,23 +4,11 @@ package com.kaltura.vo
 	[Bindable]
 	public dynamic class KalturaBaseRestriction extends BaseFlexVo
 	{
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-		}
-		public function getParamKeys():Array
+public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = new Array();
 			return arr;
 		}
-
-		public function getUpdateableParamKeys():Array
-		{
-			var arr : Array;
-			arr = new Array();
-			return arr;
-		}
-
 	}
 }

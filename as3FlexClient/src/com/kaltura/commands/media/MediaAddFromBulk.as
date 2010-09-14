@@ -7,8 +7,9 @@ package com.kaltura.commands.media
 	public class MediaAddFromBulk extends KalturaCall
 	{
 		public var filterFields : String;
-		public function MediaAddFromBulk( mediaEntry : KalturaMediaEntry,url : String,bulkUploadId : int )
+		public function MediaAddFromBulk( mediaEntry : KalturaMediaEntry,url : String,bulkUploadId : int,pluginDataArray : Array=null )
 		{
+			if(pluginDataArray== null)pluginDataArray= new Array();
 			service= 'media';
 			action= 'addFromBulk';
 
@@ -22,6 +23,9 @@ package com.kaltura.commands.media
 			valueArr.push( url );
 			keyArr.push( 'bulkUploadId' );
 			valueArr.push( bulkUploadId );
+ 			keyValArr = extractArray(pluginDataArray,'pluginDataArray');
+			keyArr = keyArr.concat( keyValArr[0] );
+			valueArr = valueArr.concat( keyValArr[1] );
 			applySchema( keyArr , valueArr );
 		}
 

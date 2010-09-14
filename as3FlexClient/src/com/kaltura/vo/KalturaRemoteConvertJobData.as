@@ -6,23 +6,10 @@ package com.kaltura.vo
 	public dynamic class KalturaRemoteConvertJobData extends KalturaConvartableJobData
 	{
 		public var srcFileUrl : String;
-		public var destFileUrl : String;
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-			propertyList.push('srcFileUrl');
-			propertyList.push('destFileUrl');
-		}
-		override public function getParamKeys():Array
-		{
-			var arr : Array;
-			arr = super.getParamKeys();
-			arr.push('srcFileUrl');
-			arr.push('destFileUrl');
-			return arr;
-		}
 
-		override public function getUpdateableParamKeys():Array
+		public var destFileUrl : String;
+
+override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = super.getUpdateableParamKeys();
@@ -30,6 +17,5 @@ package com.kaltura.vo
 			arr.push('destFileUrl');
 			return arr;
 		}
-
 	}
 }

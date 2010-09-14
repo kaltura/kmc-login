@@ -6,26 +6,12 @@ package com.kaltura.vo
 	public dynamic class KalturaMixEntry extends KalturaPlayableEntry
 	{
 		public var hasRealThumbnail : Boolean;
-		public var editorType : int = int.MIN_VALUE;
-		public var dataContent : String;
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-			propertyList.push('hasRealThumbnail');
-			propertyList.push('editorType');
-			propertyList.push('dataContent');
-		}
-		override public function getParamKeys():Array
-		{
-			var arr : Array;
-			arr = super.getParamKeys();
-			arr.push('hasRealThumbnail');
-			arr.push('editorType');
-			arr.push('dataContent');
-			return arr;
-		}
 
-		override public function getUpdateableParamKeys():Array
+		public var editorType : int = int.MIN_VALUE;
+
+		public var dataContent : String;
+
+override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = super.getUpdateableParamKeys();
@@ -33,6 +19,5 @@ package com.kaltura.vo
 			arr.push('dataContent');
 			return arr;
 		}
-
 	}
 }

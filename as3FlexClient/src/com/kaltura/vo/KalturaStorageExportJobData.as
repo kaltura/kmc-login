@@ -6,23 +6,10 @@ package com.kaltura.vo
 	public dynamic class KalturaStorageExportJobData extends KalturaStorageJobData
 	{
 		public var destFileSyncStoredPath : String;
-		public var force : Boolean;
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-			propertyList.push('destFileSyncStoredPath');
-			propertyList.push('force');
-		}
-		override public function getParamKeys():Array
-		{
-			var arr : Array;
-			arr = super.getParamKeys();
-			arr.push('destFileSyncStoredPath');
-			arr.push('force');
-			return arr;
-		}
 
-		override public function getUpdateableParamKeys():Array
+		public var force : Boolean;
+
+override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = super.getUpdateableParamKeys();
@@ -30,6 +17,5 @@ package com.kaltura.vo
 			arr.push('force');
 			return arr;
 		}
-
 	}
 }

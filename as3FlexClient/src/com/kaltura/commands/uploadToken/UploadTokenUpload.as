@@ -7,7 +7,7 @@ package com.kaltura.commands.uploadToken
 	public class UploadTokenUpload extends KalturaCall
 	{
 		public var filterFields : String;
-		public function UploadTokenUpload( uploadTokenId : String,fileData : file,resume : Boolean=false,finalChunk : Boolean=true )
+		public function UploadTokenUpload( uploadTokenId : String,fileData : file,resume : Boolean=false,finalChunk : Boolean=true,resumeAt : int=-1 )
 		{
 			service= 'uploadtoken';
 			action= 'upload';
@@ -24,6 +24,8 @@ package com.kaltura.commands.uploadToken
 			valueArr.push( resume );
 			keyArr.push( 'finalChunk' );
 			valueArr.push( finalChunk );
+			keyArr.push( 'resumeAt' );
+			valueArr.push( resumeAt );
 			applySchema( keyArr , valueArr );
 		}
 

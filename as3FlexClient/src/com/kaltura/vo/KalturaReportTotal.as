@@ -5,14 +5,10 @@ package com.kaltura.vo
 	public dynamic class KalturaReportTotal extends BaseFlexVo
 	{
 		public var header : String;
+
 		public var data : String;
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-			propertyList.push('header');
-			propertyList.push('data');
-		}
-		public function getParamKeys():Array
+
+public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = new Array();
@@ -20,15 +16,5 @@ package com.kaltura.vo
 			arr.push('data');
 			return arr;
 		}
-
-		public function getUpdateableParamKeys():Array
-		{
-			var arr : Array;
-			arr = new Array();
-			arr.push('header');
-			arr.push('data');
-			return arr;
-		}
-
 	}
 }

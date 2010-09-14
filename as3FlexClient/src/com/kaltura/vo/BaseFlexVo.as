@@ -2,7 +2,7 @@ package com.kaltura.vo
 {
 	import mx.utils.ObjectProxy;
 	
-	public class BaseFlexVo extends ObjectProxy
+	public dynamic class BaseFlexVo extends ObjectProxy
 	{
 		private var _updatedFieldsOnly : Boolean = false;
 		

@@ -6,23 +6,10 @@ package com.kaltura.vo
 	public dynamic class KalturaPullJobData extends KalturaJobData
 	{
 		public var srcFileUrl : String;
-		public var destFileLocalPath : String;
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-			propertyList.push('srcFileUrl');
-			propertyList.push('destFileLocalPath');
-		}
-		override public function getParamKeys():Array
-		{
-			var arr : Array;
-			arr = super.getParamKeys();
-			arr.push('srcFileUrl');
-			arr.push('destFileLocalPath');
-			return arr;
-		}
 
-		override public function getUpdateableParamKeys():Array
+		public var destFileLocalPath : String;
+
+override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = super.getUpdateableParamKeys();
@@ -30,6 +17,5 @@ package com.kaltura.vo
 			arr.push('destFileLocalPath');
 			return arr;
 		}
-
 	}
 }

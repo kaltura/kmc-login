@@ -33,5 +33,14 @@ package com.kaltura.types
 		public static const MIDROLL_CLICKED : int = 29;
 		public static const POSTROLL_CLICKED : int = 30;
 		public static const OVERLAY_CLICKED : int = 31;
+		public static const PREROLL_25 : int = 32;
+		public static const PREROLL_50 : int = 33;
+		public static const PREROLL_75 : int = 34;
+		public static const MIDROLL_25 : int = 35;
+		public static const MIDROLL_50 : int = 36;
+		public static const MIDROLL_75 : int = 37;
+		public static const POSTROLL_25 : int = 38;
+		public static const POSTROLL_50 : int = 39;
+		public static const POSTROLL_75 : int = 40;
 	}
 }

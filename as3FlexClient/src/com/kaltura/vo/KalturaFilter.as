@@ -7,14 +7,10 @@ package com.kaltura.vo
 	public dynamic class KalturaFilter extends BaseFlexVo
 	{
 		public var orderBy : String;
+
 		public var advancedSearch : KalturaSearchItem;
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-			propertyList.push('orderBy');
-			propertyList.push('advancedSearch');
-		}
-		public function getParamKeys():Array
+
+public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = new Array();
@@ -22,15 +18,5 @@ package com.kaltura.vo
 			arr.push('advancedSearch');
 			return arr;
 		}
-
-		public function getUpdateableParamKeys():Array
-		{
-			var arr : Array;
-			arr = new Array();
-			arr.push('orderBy');
-			arr.push('advancedSearch');
-			return arr;
-		}
-
 	}
 }

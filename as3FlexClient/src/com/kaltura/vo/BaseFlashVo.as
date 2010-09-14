@@ -1,6 +1,6 @@
 package com.kaltura.vo
 {
-	public class BaseFlashVo
+	public dynamic class BaseFlashVo
 	{
 		private var _updatedFieldsOnly : Boolean = false;
 		

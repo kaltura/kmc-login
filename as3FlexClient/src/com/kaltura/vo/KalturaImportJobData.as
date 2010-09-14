@@ -6,26 +6,12 @@ package com.kaltura.vo
 	public dynamic class KalturaImportJobData extends KalturaJobData
 	{
 		public var srcFileUrl : String;
-		public var destFileLocalPath : String;
-		public var flavorAssetId : String;
-		override protected function setupPropertyList():void
-		{
-			super.setupPropertyList();
-			propertyList.push('srcFileUrl');
-			propertyList.push('destFileLocalPath');
-			propertyList.push('flavorAssetId');
-		}
-		override public function getParamKeys():Array
-		{
-			var arr : Array;
-			arr = super.getParamKeys();
-			arr.push('srcFileUrl');
-			arr.push('destFileLocalPath');
-			arr.push('flavorAssetId');
-			return arr;
-		}
 
-		override public function getUpdateableParamKeys():Array
+		public var destFileLocalPath : String;
+
+		public var flavorAssetId : String;
+
+override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = super.getUpdateableParamKeys();
@@ -34,6 +20,5 @@ package com.kaltura.vo
 			arr.push('flavorAssetId');
 			return arr;
 		}
-
 	}
 }
