@@ -1,21 +1,21 @@
-package com.kaltura.commands.documents
+package com.kaltura.commands.auditTrail
 {
-	import com.kaltura.vo.File;
-	import com.kaltura.delegates.documents.DocumentsUploadDelegate;
+	import com.kaltura.vo.KalturaAuditTrail;
+	import com.kaltura.delegates.auditTrail.AuditTrailAddDelegate;
 	import com.kaltura.net.KalturaCall;
 
-	public class DocumentsUpload extends KalturaCall
+	public class AuditTrailAdd extends KalturaCall
 	{
 		public var filterFields : String;
-		public function DocumentsUpload( fileData : file )
+		public function AuditTrailAdd( auditTrail : KalturaAuditTrail )
 		{
-			service= 'document_documents';
-			action= 'upload';
+			service= 'audit_audittrail';
+			action= 'add';
 
 			var keyArr : Array = new Array();
 			var valueArr : Array = new Array();
 			var keyValArr : Array = new Array();
- 			keyValArr = kalturaObject2Arrays(fileData,'fileData');
+ 			keyValArr = kalturaObject2Arrays(auditTrail,'auditTrail');
 			keyArr = keyArr.concat( keyValArr[0] );
 			valueArr = valueArr.concat( keyValArr[1] );
 			applySchema( keyArr , valueArr );
@@ -24,7 +24,7 @@ package com.kaltura.commands.documents
 		override public function execute() : void
 		{
 			setRequestArgument('filterFields',filterFields);
-			delegate = new DocumentsUploadDelegate( this , config );
+			delegate = new AuditTrailAddDelegate( this , config );
 		}
 	}
 }

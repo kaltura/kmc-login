@@ -8,7 +8,7 @@ package com.kaltura.commands.metadataBatch
 	public class MetadataBatchGetExclusiveAlmostDone extends KalturaCall
 	{
 		public var filterFields : String;
-		public function MetadataBatchGetExclusiveAlmostDone( lockKey : KalturaExclusiveLockKey,maxExecutionTime : int,numberOfJobs : int,filter : KalturaBatchJobFilter=null,jobType : int )
+		public function MetadataBatchGetExclusiveAlmostDone( lockKey : KalturaExclusiveLockKey,maxExecutionTime : int,numberOfJobs : int,filter : KalturaBatchJobFilter=null,jobType : int=undefined )
 		{
 			if(filter== null)filter= new KalturaBatchJobFilter();
 			service= 'metadata_metadatabatch';

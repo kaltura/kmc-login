@@ -8,7 +8,7 @@ package com.kaltura.commands.filesyncImportBatch
 	public class FilesyncImportBatchGetExclusiveJobs extends KalturaCall
 	{
 		public var filterFields : String;
-		public function FilesyncImportBatchGetExclusiveJobs( lockKey : KalturaExclusiveLockKey,maxExecutionTime : int,numberOfJobs : int,filter : KalturaBatchJobFilter=null,jobType : int )
+		public function FilesyncImportBatchGetExclusiveJobs( lockKey : KalturaExclusiveLockKey,maxExecutionTime : int,numberOfJobs : int,filter : KalturaBatchJobFilter=null,jobType : int=undefined )
 		{
 			if(filter== null)filter= new KalturaBatchJobFilter();
 			service= 'multicenters_filesyncimportbatch';
