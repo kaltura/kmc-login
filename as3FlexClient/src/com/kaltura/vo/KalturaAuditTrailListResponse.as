@@ -2,7 +2,7 @@ package com.kaltura.vo
 {
 	import com.kaltura.vo.BaseFlexVo;
 	[Bindable]
-	public dynamic class KalturaFileSyncListResponse extends BaseFlexVo
+	public dynamic class KalturaAuditTrailListResponse extends BaseFlexVo
 	{
 		public var objects : Array = new Array();
 

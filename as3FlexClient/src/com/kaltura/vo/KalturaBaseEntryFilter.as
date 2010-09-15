@@ -105,6 +105,8 @@ package com.kaltura.vo
 
 		public var tagsAdminTagsNameMultiLikeAnd : String;
 
+		public var freeText : String;
+
 override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
@@ -159,6 +161,7 @@ override public function getUpdateableParamKeys():Array
 			arr.push('tagsNameMultiLikeAnd');
 			arr.push('tagsAdminTagsMultiLikeAnd');
 			arr.push('tagsAdminTagsNameMultiLikeAnd');
+			arr.push('freeText');
 			return arr;
 		}
 	}
