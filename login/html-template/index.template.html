@@ -94,7 +94,11 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 					 	 "&srvurl=api_v3/index.php" +
 						
 						// set-initial-password code
-					 	//"&hashKey=atar" +
+					 	// "&errorCode=NEW_PASSWORD_HASH_KEY_EXPIRED" +
+					 	"&errorCode=NEW_PASSWORD_HASH_KEY_EXPIRED" +
+	
+						// set-initial-password code
+					 	"&hashKey=atar" +
 	
 						// show sign up link button:
 						"&visibleSignup=true",
