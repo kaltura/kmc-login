@@ -33,10 +33,20 @@
 			// members
 			// =====================================================
 			private static const KALTURA_SERVICES_URL:String = "index.php/partnerservices2";
-			private static const VERSION:String = "1.1.4";
+			private static const VERSION:String = "1.1.6";
 
 			private const LBL_WIDTH:Number = 120;
 
+			/**
+			 * the email address to be used from current point.
+			 * */
+			private var _relevantEmail:String;
+			
+			/**
+			 * the password to be used from current point.
+			 * */
+			private var _relevantPwd:String; 
+			
 			/**
 			 * google analytics id
 			 * */
@@ -142,12 +152,15 @@
 				}
 				else {
 					params.email = email.text;
+					_relevantEmail = email.text;
+					
 				}
 				if (pwd != '') {
 					params.password = pwd;
 				}
 				else {
 					params.password = password.text;
+					_relevantPwd = password.text;
 				}
 				loginSrv.send(params);
 
@@ -178,6 +191,7 @@
 					return;
 				}
 
+				_relevantPwd = tf1.text;
 				// post request
 				var ausip:AdminUserSetInitialPassword = new AdminUserSetInitialPassword(_hashKey, tf1.text);
 				ausip.addEventListener(KalturaEvent.COMPLETE, onSetInitialResult);
@@ -252,6 +266,7 @@
 
 				var params:Object = new Object();
 				params.email = tf.text;
+				_relevantEmail = tf.text;
 				resetPasswordSrv.send(params);
 				//TODO make V3
 			}
@@ -315,6 +330,8 @@
 				}
 				
 				// post request
+				_relevantEmail = email.text;
+				_relevantPwd = pwd3.text;
 				var auup:AdminUserUpdatePassword = new AdminUserUpdatePassword(email.text, pwd5.text, '', pwd3.text );
 				auup.addEventListener(KalturaEvent.COMPLETE, onUpdateResult);
 				auup.addEventListener(KalturaEvent.FAILED, faultHandlerV3);
@@ -328,8 +345,7 @@
 			protected function onUpdateResult(event:KalturaEvent):void {
 				// we assume the user entered his email when he first logged in, 
 				// before being asked to update pwd, and use the pwd sent in update.
-				//TODO this sucks!!!
-				adminLogin(email.text, pwd3.text);
+				adminLogin(_relevantEmail, _relevantPwd);
 			}
 			
 
@@ -374,7 +390,7 @@
 				if (event.result.error.hasOwnProperty('num_0'))
 					Alert.show(event.result.error.num_0.desc);
 				else
-					Alert.show(resourceManager.getString('kmc', 'resetMess', [email2.text]));
+					Alert.show(resourceManager.getString('kmc', 'resetMess', [_relevantEmail]));
 			}
 
 
@@ -460,7 +476,7 @@
 								  focusOut="{restoreField( event.target , resourceManager.getString('kmc', 'enterEmail'))}"/>
 				</mx:HBox>
 				<mx:HBox paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0" >
-					<mx:Label width="{LBL_WIDTH}" text="{resourceManager.getString('kmc', 'password')}"/>
+					<mx:Label width="{LBL_WIDTH}" text="{resourceManager.getString('kmc', 'password')}:"/>
 					<mx:TextInput id="password" paste="pasteHandler(event)"
 								  creationComplete="restoreField( event.target , resourceManager.getString('kmc', 'enterPassword'))"
 								  focusIn="removeDefaultText(event)" focusOut="resetDefaultText(event)"/>
@@ -483,7 +499,7 @@
 		<mx:TitleWindow title="{resourceManager.getString('kmc', 'forgotPassword')}" showCloseButton="false"
 						keyDown="{if(event.keyCode == Keyboard.ENTER)resetPassword(email2);}" name="Left">
 			<mx:VBox width="100%" height="100%" paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0">
-				<mx:Text selectable="false" width="95%" htmlText="{resourceManager.getString('kmc', 'forgotPasswordText')}"/>
+				<mx:Text width="95%" htmlText="{resourceManager.getString('kmc', 'forgotPasswordText')}"/>
 				<mx:HBox verticalAlign="middle" width="100%">
 					<mx:Label text="{resourceManager.getString('kmc', 'email')}:"/>
 					<mx:TextInput id="email2"
@@ -510,7 +526,7 @@
 		<mx:TitleWindow title="{resourceManager.getString('kmc', 'invalidHash')}" showCloseButton="false"
 						keyDown="{if(event.keyCode == Keyboard.ENTER)resetPassword(email3);}" name="Back">
 			<mx:VBox width="100%" height="100%" paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0">
-				<mx:Text selectable="false" width="95%" htmlText="{resourceManager.getString('kmc', 'invalidHashText')}"/>
+				<mx:Text width="95%" text="{resourceManager.getString('kmc', 'invalidHashText')}"/>
 				<mx:HBox verticalAlign="middle" width="100%">
 					<mx:Label text="{resourceManager.getString('kmc', 'email')}:"/>
 					<mx:TextInput id="email3"
