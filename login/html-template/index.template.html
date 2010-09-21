@@ -79,7 +79,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 	// if we've detected an acceptable version
 	// embed the Flash Content SWF when all tests are passed
 	AC_FL_RunContent(
-			"src", "${swf}",
+			"src", "${swf}", //"https://www.kaltura.co.cc/flash/kmc/login/dev/login.swf", //
 			"width", "${width}",
 			"height", "${height}",
 			"align", "middle",
@@ -98,7 +98,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 					 	//"&errorCode=NEW_PASSWORD_HASH_KEY_EXPIRED" +
 	
 						// set-initial-password code
-					 	"&hashKey=atar" +
+					 	//"&hashKey=atar" +
 	
 						// show sign up link button:
 						"&visibleSignup=true",
