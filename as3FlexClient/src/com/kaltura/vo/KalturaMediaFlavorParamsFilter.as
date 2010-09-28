@@ -1,9 +1,9 @@
 package com.kaltura.vo
 {
-	import com.kaltura.vo.KalturaFlavorParamsFilter;
+	import com.kaltura.vo.KalturaMediaFlavorParamsBaseFilter;
 
 	[Bindable]
-	public dynamic class KalturaMediaFlavorParamsFilter extends KalturaFlavorParamsFilter
+	public dynamic class KalturaMediaFlavorParamsFilter extends KalturaMediaFlavorParamsBaseFilter
 	{
 override public function getUpdateableParamKeys():Array
 		{

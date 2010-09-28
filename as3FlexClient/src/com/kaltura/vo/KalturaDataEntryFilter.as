@@ -1,9 +1,9 @@
 package com.kaltura.vo
 {
-	import com.kaltura.vo.KalturaBaseEntryFilter;
+	import com.kaltura.vo.KalturaDataEntryBaseFilter;
 
 	[Bindable]
-	public dynamic class KalturaDataEntryFilter extends KalturaBaseEntryFilter
+	public dynamic class KalturaDataEntryFilter extends KalturaDataEntryBaseFilter
 	{
 override public function getUpdateableParamKeys():Array
 		{

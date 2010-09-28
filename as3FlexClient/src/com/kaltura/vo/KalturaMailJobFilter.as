@@ -1,9 +1,9 @@
 package com.kaltura.vo
 {
-	import com.kaltura.vo.KalturaBaseJobFilter;
+	import com.kaltura.vo.KalturaMailJobBaseFilter;
 
 	[Bindable]
-	public dynamic class KalturaMailJobFilter extends KalturaBaseJobFilter
+	public dynamic class KalturaMailJobFilter extends KalturaMailJobBaseFilter
 	{
 override public function getUpdateableParamKeys():Array
 		{

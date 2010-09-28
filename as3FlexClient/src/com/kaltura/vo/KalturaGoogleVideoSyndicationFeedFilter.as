@@ -1,9 +1,9 @@
 package com.kaltura.vo
 {
-	import com.kaltura.vo.KalturaBaseSyndicationFeedFilter;
+	import com.kaltura.vo.KalturaGoogleVideoSyndicationFeedBaseFilter;
 
 	[Bindable]
-	public dynamic class KalturaGoogleVideoSyndicationFeedFilter extends KalturaBaseSyndicationFeedFilter
+	public dynamic class KalturaGoogleVideoSyndicationFeedFilter extends KalturaGoogleVideoSyndicationFeedBaseFilter
 	{
 override public function getUpdateableParamKeys():Array
 		{

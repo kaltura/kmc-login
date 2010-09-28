@@ -1,9 +1,9 @@
 package com.kaltura.vo
 {
-	import com.kaltura.vo.KalturaLiveStreamEntryFilter;
+	import com.kaltura.vo.KalturaLiveStreamAdminEntryBaseFilter;
 
 	[Bindable]
-	public dynamic class KalturaLiveStreamAdminEntryFilter extends KalturaLiveStreamEntryFilter
+	public dynamic class KalturaLiveStreamAdminEntryFilter extends KalturaLiveStreamAdminEntryBaseFilter
 	{
 override public function getUpdateableParamKeys():Array
 		{

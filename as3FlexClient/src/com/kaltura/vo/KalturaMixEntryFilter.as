@@ -1,9 +1,9 @@
 package com.kaltura.vo
 {
-	import com.kaltura.vo.KalturaPlayableEntryFilter;
+	import com.kaltura.vo.KalturaMixEntryBaseFilter;
 
 	[Bindable]
-	public dynamic class KalturaMixEntryFilter extends KalturaPlayableEntryFilter
+	public dynamic class KalturaMixEntryFilter extends KalturaMixEntryBaseFilter
 	{
 override public function getUpdateableParamKeys():Array
 		{

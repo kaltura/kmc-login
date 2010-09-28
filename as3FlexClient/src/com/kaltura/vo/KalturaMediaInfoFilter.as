@@ -1,17 +1,14 @@
 package com.kaltura.vo
 {
-	import com.kaltura.vo.KalturaFilter;
+	import com.kaltura.vo.KalturaMediaInfoBaseFilter;
 
 	[Bindable]
-	public dynamic class KalturaMediaInfoFilter extends KalturaFilter
+	public dynamic class KalturaMediaInfoFilter extends KalturaMediaInfoBaseFilter
 	{
-		public var flavorAssetIdEqual : String;
-
 override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
 			arr = super.getUpdateableParamKeys();
-			arr.push('flavorAssetIdEqual');
 			return arr;
 		}
 	}
