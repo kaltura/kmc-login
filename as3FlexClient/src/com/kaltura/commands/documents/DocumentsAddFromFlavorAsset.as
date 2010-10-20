@@ -7,7 +7,7 @@ package com.kaltura.commands.documents
 	public class DocumentsAddFromFlavorAsset extends KalturaCall
 	{
 		public var filterFields : String;
-		public function DocumentsAddFromFlavorAsset( documentEntry : KalturaDocumentEntry=null,sourceFlavorAssetId : String )
+		public function DocumentsAddFromFlavorAsset( sourceFlavorAssetId : String,documentEntry : KalturaDocumentEntry=null )
 		{
 			if(documentEntry== null)documentEntry= new KalturaDocumentEntry();
 			service= 'document_documents';
@@ -16,11 +16,11 @@ package com.kaltura.commands.documents
 			var keyArr : Array = new Array();
 			var valueArr : Array = new Array();
 			var keyValArr : Array = new Array();
+			keyArr.push( 'sourceFlavorAssetId' );
+			valueArr.push( sourceFlavorAssetId );
  			keyValArr = kalturaObject2Arrays(documentEntry,'documentEntry');
 			keyArr = keyArr.concat( keyValArr[0] );
 			valueArr = valueArr.concat( keyValArr[1] );
-			keyArr.push( 'sourceFlavorAssetId' );
-			valueArr.push( sourceFlavorAssetId );
 			applySchema( keyArr , valueArr );
 		}
 

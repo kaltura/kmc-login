@@ -7,7 +7,7 @@ package com.kaltura.commands.liveStream
 	public class LiveStreamAdd extends KalturaCall
 	{
 		public var filterFields : String;
-		public function LiveStreamAdd( liveStreamEntry : KalturaLiveStreamAdminEntry )
+		public function LiveStreamAdd( liveStreamEntry : KalturaLiveStreamAdminEntry,sourceType : int=undefined )
 		{
 			service= 'livestream';
 			action= 'add';
@@ -18,6 +18,8 @@ package com.kaltura.commands.liveStream
  			keyValArr = kalturaObject2Arrays(liveStreamEntry,'liveStreamEntry');
 			keyArr = keyArr.concat( keyValArr[0] );
 			valueArr = valueArr.concat( keyValArr[1] );
+			keyArr.push( 'sourceType' );
+			valueArr.push( sourceType );
 			applySchema( keyArr , valueArr );
 		}
 

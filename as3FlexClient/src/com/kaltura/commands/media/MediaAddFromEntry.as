@@ -7,7 +7,7 @@ package com.kaltura.commands.media
 	public class MediaAddFromEntry extends KalturaCall
 	{
 		public var filterFields : String;
-		public function MediaAddFromEntry( mediaEntry : KalturaMediaEntry=null,sourceEntryId : String,sourceFlavorParamsId : int=undefined )
+		public function MediaAddFromEntry( sourceEntryId : String,mediaEntry : KalturaMediaEntry=null,sourceFlavorParamsId : int=undefined )
 		{
 			if(mediaEntry== null)mediaEntry= new KalturaMediaEntry();
 			service= 'media';
@@ -16,11 +16,11 @@ package com.kaltura.commands.media
 			var keyArr : Array = new Array();
 			var valueArr : Array = new Array();
 			var keyValArr : Array = new Array();
+			keyArr.push( 'sourceEntryId' );
+			valueArr.push( sourceEntryId );
  			keyValArr = kalturaObject2Arrays(mediaEntry,'mediaEntry');
 			keyArr = keyArr.concat( keyValArr[0] );
 			valueArr = valueArr.concat( keyValArr[1] );
-			keyArr.push( 'sourceEntryId' );
-			valueArr.push( sourceEntryId );
 			keyArr.push( 'sourceFlavorParamsId' );
 			valueArr.push( sourceFlavorParamsId );
 			applySchema( keyArr , valueArr );

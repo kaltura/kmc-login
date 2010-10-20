@@ -6,7 +6,7 @@ package com.kaltura.commands.media
 	public class MediaUpdateThumbnailFromSourceEntry extends KalturaCall
 	{
 		public var filterFields : String;
-		public function MediaUpdateThumbnailFromSourceEntry( entryId : String,sourceEntryId : String,timeOffset : int )
+		public function MediaUpdateThumbnailFromSourceEntry( entryId : String,sourceEntryId : String,timeOffset : int,flavorParamsId : int=undefined )
 		{
 			service= 'media';
 			action= 'updateThumbnailFromSourceEntry';
@@ -20,6 +20,8 @@ package com.kaltura.commands.media
 			valueArr.push( sourceEntryId );
 			keyArr.push( 'timeOffset' );
 			valueArr.push( timeOffset );
+			keyArr.push( 'flavorParamsId' );
+			valueArr.push( flavorParamsId );
 			applySchema( keyArr , valueArr );
 		}
 
