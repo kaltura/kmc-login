@@ -48,6 +48,8 @@ package com.kaltura.vo
 
 		public var storageSize : int = int.MIN_VALUE;
 
+		public var password : String;
+
 public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
@@ -70,6 +72,7 @@ public function getUpdateableParamKeys():Array
 			arr.push('partnerData');
 			arr.push('indexedPartnerDataInt');
 			arr.push('indexedPartnerDataString');
+			arr.push('password');
 			return arr;
 		}
 	}

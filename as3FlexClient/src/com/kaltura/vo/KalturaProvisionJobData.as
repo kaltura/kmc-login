@@ -23,6 +23,8 @@ package com.kaltura.vo
 
 		public var returnVal : String;
 
+		public var mediaType : int = int.MIN_VALUE;
+
 override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
@@ -36,6 +38,7 @@ override public function getUpdateableParamKeys():Array
 			arr.push('encoderUsername');
 			arr.push('endDate');
 			arr.push('returnVal');
+			arr.push('mediaType');
 			return arr;
 		}
 	}
