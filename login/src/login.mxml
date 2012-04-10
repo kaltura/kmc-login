@@ -10,8 +10,11 @@
 			import com.kaltura.analytics.GoogleAnalyticsConsts;
 			import com.kaltura.analytics.GoogleAnalyticsTracker;
 			import com.kaltura.analytics.KAnalyticsTracker;
+			import com.kaltura.commands.MultiRequest;
+			import com.kaltura.commands.adminUser.AdminUserLogin;
 			import com.kaltura.commands.adminUser.AdminUserSetInitialPassword;
 			import com.kaltura.commands.adminUser.AdminUserUpdatePassword;
+			import com.kaltura.commands.user.UserGetByLoginId;
 			import com.kaltura.config.KalturaConfig;
 			import com.kaltura.events.KalturaEvent;
 			import com.kaltura.types.KalturaStatsKmcEventType;
@@ -98,6 +101,11 @@
 
 				// decide protocol
 				_protocol = getLoadingProtocol();
+				
+				//in case we debug localy use http as defualt
+				if(_protocol == "file://")
+					_protocol = "http://";
+				
 				// create client for API_v3 calls
 				var configuration:KalturaConfig = new KalturaConfig();
 				configuration.protocol = _protocol;
@@ -150,7 +158,7 @@
 			/**
 			 * "normal" login
 			 * */
-			private function adminLogin(mail:String = '', pwd:String = ''):void {
+			/*private function adminLogin(mail:String = '', pwd:String = ''):void {
 				var ga:GoogleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
 				ga.init("", "", this, "KMC_ANDROMEDA/Login", _urchinNumber, "AS3", Application.application.parameters.gaDebug == "true" ? true : false);
 				GoogleAnalyticsTracker.getInstance().sendToGA(GoogleAnalyticsConsts.LOGIN);
@@ -181,14 +189,87 @@
 					_relevantPwd = password.text;
 				}
 				loginSrv.send(params);
-
-// for API_V3
-//				var aul:AdminUserLogin = new AdminUserLogin(email.text, password.text);
-//				aul.addEventListener(KalturaEvent.COMPLETE, onLoginResult);
-//				aul.addEventListener(KalturaEvent.FAILED, onLoginFault);
-//				_kc.post(aul);
+			 } */
+			
+			private function adminLogin(mail:String = '', pwd:String = ''):void 
+			{
+				//Send notification to Google Analytics
+				var ga:GoogleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
+				ga.init("", "", this, "KMC_ANDROMEDA/Login", _urchinNumber, "AS3", Application.application.parameters.gaDebug == "true" ? true : false);
+				GoogleAnalyticsTracker.getInstance().sendToGA(GoogleAnalyticsConsts.LOGIN);
+				//Send notification to Kaltura
+				var ka:KAnalyticsTracker = KAnalyticsTracker.getInstance();
+				ka.init(_kc, "Login", VERSION, "");
+				KAnalyticsTracker.getInstance().sendEvent(KalturaStatsKmcEventType.LOGIN, "pagingInEntryTable>Manage");
+				
+				//Check email validator
+				if (!validateTextField(email, resourceManager.getString('kmc', 'enterEmail'), emailValidator))
+					return;
+				
+				//Check password validator
+				if (!validateTextField(password, resourceManager.getString('kmc', 'enterPassword'), passwordValidator))
+					return;
+				
+				// post request:
+				var params:Object = new Object();
+				if (mail != '') {
+					params.email = mail;
+				}
+				else {
+					params.email = email.text;
+					_relevantEmail = email.text;
+					
+				}
+				if (pwd != '') {
+					params.password = pwd;
+				}
+				else {
+					params.password = password.text;
+					_relevantPwd = password.text;
+				}
+				
+				var mr : MultiRequest = new MultiRequest();
+				
+				//First request to admin login will return the KS
+				var aul:AdminUserLogin = new AdminUserLogin(params.email, params.password);
+				
+				//The second call will return the user data needed for the KMC
+				var ugblId : UserGetByLoginId = new UserGetByLoginId(params.email);
+				
+				mr.addAction( aul );
+				mr.addAction( ugblId );
+				
+				mr.addRequestParam("2:ks","{1:result}");
+				
+				mr.addEventListener(KalturaEvent.COMPLETE, onLoginResult);
+				mr.addEventListener(KalturaEvent.FAILED, onLoginFault);
+				
+				_kc.post( mr );
 			}
-
+			
+			/**
+			 * On a successful login extract the ks an initiate the KMC via JS else alert
+			 * */
+			private function onLoginResult( event : KalturaEvent ) :void
+			{
+				if (event.data) {
+					// login succeeded
+					loginF(event.data[1].partnerId, event.data[1].partnerId+"00", event.data[1].id, event.data[0], event.data[1].screenName, event.data[1].email);
+				}
+				else 
+				{
+					// see what went wrong
+					Alert.show(event.error.errorMsg,resourceManager.getString('kmc', 'errorOccurred'));
+				}
+			}
+			
+			/**
+			 * If we failed to Login Alert to the user the Server Messege
+			 * */
+			private function onLoginFault( event : KalturaEvent ) :void
+			{
+				Alert.show(event.error.errorMsg,resourceManager.getString('kmc', 'errorOccurred'));
+			}
 
 			/**
 			 * validate both pwds are present and equal and call
@@ -397,7 +478,7 @@
 			 * not when the *required action* goes wrong
 			 * */
 			private function faultHandler(event:FaultEvent):void {
-				Alert.show(resourceManager.getString('kmc', 'errorOccurred: ' + event.message));
+				Alert.show(event.message.toString(),resourceManager.getString('kmc', 'errorOccurred'));
 			}
 
 
@@ -471,8 +552,8 @@
 	<mx:EmailValidator id="emailValidator" required="true" property="text"/>
 
 	<!-- PS2 services -->
-	<mx:HTTPService id="loginSrv" url="{_protocol + _domain}/{KALTURA_SERVICES_URL}/adminlogin" method="POST" resultFormat="e4x"
-					showBusyCursor="true" result="onLoginSuccess( event )" fault="faultHandler( event )"/>
+<!--	<mx:HTTPService id="loginSrv" url="{_protocol + _domain}/{KALTURA_SERVICES_URL}/adminlogin" method="POST" resultFormat="e4x"
+					showBusyCursor="true" result="onLoginSuccess( event )" fault="faultHandler( event )"/>-->
 
 	<mx:HTTPService id="resetPasswordSrv" url="{_protocol + _domain}/{KALTURA_SERVICES_URL}/resetadminpassword" method="POST"
 					resultFormat="e4x" showBusyCursor="true" result="onResetPassResult( event )"
