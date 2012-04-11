@@ -1,66 +1,91 @@
+// ===================================================================================================
+//                           _  __     _ _
+//                          | |/ /__ _| | |_ _  _ _ _ __ _
+//                          | ' </ _` | |  _| || | '_/ _` |
+//                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
+//
+// This file is part of the Kaltura Collaborative Media Suite which allows users
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// text.
+//
+// Copyright (C) 2006-2011  Kaltura Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// @ignore
+// ===================================================================================================
 package com.kaltura.vo
 {
-	import com.kaltura.vo.BaseFlexVo;
+	import com.kaltura.vo.KalturaAsset;
+
 	[Bindable]
-	public dynamic class KalturaFlavorAsset extends BaseFlexVo
+	public dynamic class KalturaFlavorAsset extends KalturaAsset
 	{
-		public var id : String;
-
-		public var entryId : String;
-
-		public var partnerId : int = int.MIN_VALUE;
-
-		public var status : int = int.MIN_VALUE;
-
+		/** 
+		* 		* */ 
 		public var flavorParamsId : int = int.MIN_VALUE;
 
-		public var version : int = int.MIN_VALUE;
-
+		/** 
+		* 		* */ 
 		public var width : int = int.MIN_VALUE;
 
+		/** 
+		* 		* */ 
 		public var height : int = int.MIN_VALUE;
 
+		/** 
+		* 		* */ 
 		public var bitrate : int = int.MIN_VALUE;
 
+		/** 
+		* 		* */ 
 		public var frameRate : int = int.MIN_VALUE;
 
-		public var size : int = int.MIN_VALUE;
-
+		/** 
+		* 		* */ 
 		public var isOriginal : Boolean;
 
-		public var tags : String;
-
+		/** 
+		* 		* */ 
 		public var isWeb : Boolean;
 
-		public var fileExt : String;
+		/** 
+		* 		* */ 
+		public var containerFormat : String = null;
 
-		public var containerFormat : String;
+		/** 
+		* 		* */ 
+		public var videoCodecId : String = null;
 
-		public var videoCodecId : String;
+		/** 
+		* 		* */ 
+		public var status : int = int.MIN_VALUE;
 
-		public var createdAt : int = int.MIN_VALUE;
-
-		public var updatedAt : int = int.MIN_VALUE;
-
-		public var deletedAt : int = int.MIN_VALUE;
-
-		public var description : String;
-
-public function getUpdateableParamKeys():Array
+		override public function getUpdateableParamKeys():Array
 		{
 			var arr : Array;
-			arr = new Array();
-			arr.push('isOriginal');
-			arr.push('tags');
-			arr.push('isWeb');
-			arr.push('fileExt');
-			arr.push('containerFormat');
-			arr.push('videoCodecId');
-			arr.push('createdAt');
-			arr.push('updatedAt');
-			arr.push('deletedAt');
-			arr.push('description');
+			arr = super.getUpdateableParamKeys();
 			return arr;
 		}
+
+		override public function getInsertableParamKeys():Array
+		{
+			var arr : Array;
+			arr = super.getInsertableParamKeys();
+			arr.push('flavorParamsId');
+			return arr;
+		}
+
 	}
 }

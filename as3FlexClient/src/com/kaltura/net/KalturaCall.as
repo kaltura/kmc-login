@@ -1,5 +1,33 @@
+// ===================================================================================================
+//                           _  __     _ _
+//                          | |/ /__ _| | |_ _  _ _ _ __ _
+//                          | ' </ _` | |  _| || | '_/ _` |
+//                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
+//
+// This file is part of the Kaltura Collaborative Media Suite which allows users
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// text.
+//
+// Copyright (C) 2006-2011  Kaltura Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// @ignore
+// ===================================================================================================
 package com.kaltura.net {
 	
+	import com.kaltura.KalturaClient;
 	import com.kaltura.config.KalturaConfig;
 	import com.kaltura.delegates.IKalturaCallDelegate;
 	import com.kaltura.errors.KalturaError;
@@ -20,24 +48,47 @@ package com.kaltura.net {
 		public var success:Boolean = false;
 		public var action : String;
 		public var service : String;
-		public var method : String = URLRequestMethod.POST;
+		public static var defaultMethod : String = URLRequestMethod.POST;
+		public var method : String = defaultMethod;
+		
+		public var useTimeout:Boolean = true;
 		
 		public var delegate : IKalturaCallDelegate;
 		
+		/**
+		 * when the client is in queueing mode, determined whether the call is queued. 
+		 */
+		public var queued:Boolean = true;
+		
+		
 		public function KalturaCall() {}
 		
-		//OVERRIDE this function in case something needs to be initialized prior to execution
+		/**
+		 * OVERRIDE this function in case something needs to be initialized prior to execution
+		 * */
 		public function initialize():void {}
 		
-		//OVERRIDE this function to make init the right delegate action
+		/**
+		 * OVERRIDE this function to make init the right delegate action
+		 * */
 		public function execute():void {}
 		
-		public function setRequestArgument(name:String, value:Object):void {
-			if (value is Number && isNaN(value as Number)) { return; }
-			if ( value is int && value == int.MIN_VALUE ) { return; }
-				
-			if (name && value != null ) { //&& String(value).length > 0
-				this.args[name] = value;
+		public function setRequestArgument(name:String, value:*):void {
+			if (value is Number)
+			{
+				if (value == Number.NEGATIVE_INFINITY ) { return; }
+				if (value == KalturaClient.NULL_NUMBER ) { this.args[name + '__null'] = '';  return; }
+			}
+			if ( value is int)
+			{
+				if (value == int.MIN_VALUE ) { return; }
+				if (value == KalturaClient.NULL_INT ) { this.args[name + '__null'] = '';  return; }
+			}
+			if (value === null) {	return;	 }
+			if (value === KalturaClient.NULL_STRING) {	this.args[name + '__null'] = '';  return;	 }
+			
+			if (name) { //&& String(value).length > 0
+				this.args[name] = value; 
 			}
 		}
 		
@@ -51,7 +102,7 @@ package com.kaltura.net {
 			dispatchEvent(new KalturaEvent(KalturaEvent.COMPLETE, false, false, true, result));
 		}
 		/**
-		 * dispatch an Error when a request has faild for any reasone  
+		 * dispatch an Error when a request has faild for any reason  
 		 * @param error
 		 * 
 		 */		
@@ -77,32 +128,47 @@ package com.kaltura.net {
 			var objArr : Array;
 			var objKeys : Array;
 			
-			if(obj["getUpdatedFieldsOnly"]())
-				objKeys = obj["getUpdateableParamKeys"]();
+			if(obj["getUpdatedFieldsOnly"]() || obj["getInsertedFields"]()) {
+				objKeys = [];
+				if (obj["getUpdatedFieldsOnly"]() ) {
+					objKeys = objKeys.concat( obj["getUpdateableParamKeys"]());
+				}
+				if (obj["getInsertedFields"]() ) {
+					objKeys = objKeys.concat( obj["getInsertableParamKeys"]());
+				}
+				
+			}
 			else
 				objKeys = ObjectUtil.getObjectAllKeys( obj );
-	
+			
 			var j:int=0;
 			for (var i:int=0; i<objKeys.length; i++)
 			{
-				if(obj[objKeys[i].toString()] is String || obj[objKeys[i].toString()] is Number || obj[objKeys[i].toString()] is Boolean || obj[objKeys[i].toString()] is int)
+				var value : * = obj[objKeys[i].toString()];
+				
+				if(value === undefined)
+				{
+					continue;
+				}
+				
+				if(value is String || value is Number || value is Boolean || value is int || value === null)
 				{
 					keyArray[j] = prefix + ":" + objKeys[i];
-					valArray[j] = obj[objKeys[i].toString()];
+					valArray[j] = value;
 					++j;
 				}
-				else if( obj[objKeys[i].toString()] is Array)
+				else if( value is Array)
 				{
-					var arr : Array = extractArray( obj[objKeys[i].toString()] , prefix + ":" + objKeys[i]);
+					var arr : Array = extractArray( value , prefix + ":" + objKeys[i]);
 					keyArray = keyArray.concat( arr[0] );
 					valArray = valArray.concat( arr[1] );
 					j = valArray.length;
 				}
-				else if( obj[objKeys[i].toString()] != null ) //must be a Kaltura Object
+				else //must be a Kaltura Object
 				{
-					objArr= getQualifiedClassName(obj[objKeys[i].toString()]).split("::");
+					objArr= getQualifiedClassName(value).split("::");
 					var tempPrefix : String = objKeys[i].toString();
-					var tempKeyValArr : Array = kalturaObject2Arrays( obj[objKeys[i].toString()] , prefix + ":" + tempPrefix );
+					var tempKeyValArr : Array = kalturaObject2Arrays( value , prefix + ":" + tempPrefix );
 					keyArray = keyArray.concat(tempKeyValArr[0]);
 					valArray = valArray.concat(tempKeyValArr[1]);
 					j = valArray.length;
@@ -152,17 +218,24 @@ package com.kaltura.net {
 					//var objArr : Array = getQualifiedClassName(arr[i]).split("::");
 					//var tempPrefix : String = objArr[objArr.length-1];
 					tempArr  = kalturaObject2Arrays( arr[i] , newPrefix ); //  + ":" +tempPrefix
-
+					
 					keyArray = keyArray.concat( tempArr[0] );
 					valArray = valArray.concat( tempArr[1] );
 					j = valArray.length;
 				}
 			}
 			
+			if (arr.length == 0)
+			{
+				keyArray[j] = prefix + ":-";
+				valArray[j] = "";
+				j++;
+			}
+			
 			keyValArr = [ keyArray , valArray];
 			return keyValArr;
 		}
-
+		
 		
 		protected function applySchema(p_shema:Array,p_args:Array):void 
 		{	
