@@ -15,6 +15,7 @@
 			import com.kaltura.commands.adminUser.AdminUserSetInitialPassword;
 			import com.kaltura.commands.adminUser.AdminUserUpdatePassword;
 			import com.kaltura.commands.user.UserGetByLoginId;
+			import com.kaltura.commands.user.UserLoginByLoginId;
 			import com.kaltura.config.KalturaConfig;
 			import com.kaltura.events.KalturaEvent;
 			import com.kaltura.types.KalturaStatsKmcEventType;
@@ -230,13 +231,13 @@
 				
 				var mr : MultiRequest = new MultiRequest();
 				
-				//First request to admin login will return the KS
-				var aul:AdminUserLogin = new AdminUserLogin(params.email, params.password);
-				
+				//First request to login will return the KS
+				var ulblId: UserLoginByLoginId = new UserLoginByLoginId(params.email, params.password);
+				 
 				//The second call will return the user data needed for the KMC
 				var ugblId : UserGetByLoginId = new UserGetByLoginId(params.email);
 				
-				mr.addAction( aul );
+				mr.addAction( ulblId );
 				mr.addAction( ugblId );
 				
 				mr.addRequestParam("2:ks","{1:result}");
