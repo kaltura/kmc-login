@@ -232,7 +232,7 @@
 				var mr : MultiRequest = new MultiRequest();
 				
 				//First request to login will return the KS
-				var ulblId: UserLoginByLoginId = new UserLoginByLoginId(params.email, params.password);
+				var ulblId: UserLoginByLoginId = new UserLoginByLoginId(params.email, params.password,int.MIN_VALUE,86400,"disableentitlement");
 				 
 				//The second call will return the user data needed for the KMC
 				var ugblId : UserGetByLoginId = new UserGetByLoginId(params.email);
@@ -253,14 +253,17 @@
 			 * */
 			private function onLoginResult( event : KalturaEvent ) :void
 			{
-				if (event.data) {
-					// login succeeded
-					loginF(event.data[1].partnerId, event.data[1].partnerId+"00", event.data[1].id, event.data[0], event.data[1].screenName, event.data[1].email);
+				var errorXml : XML = new XML(event.data[0]);
+				
+				if (errorXml && errorXml.hasOwnProperty('error'))
+				{
+					//If we failed login (Wrong User Name/Wrong Password)
+					Alert.show(errorXml.error.message,resourceManager.getString('kmc', 'errorOccurred'));
 				}
 				else 
 				{
-					// see what went wrong
-					Alert.show(event.error.errorMsg,resourceManager.getString('kmc', 'errorOccurred'));
+					//On Success
+					loginF(event.data[1].partnerId, event.data[1].partnerId+"00", event.data[1].id, event.data[0], event.data[1].screenName, event.data[1].email);
 				}
 			}
 			
