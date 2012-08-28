@@ -161,13 +161,15 @@
 			 * */
 			private function adminLogin(mail:String = '', pwd:String = ''):void {
 				//Send notification to Google Analytics
-				var ga:GoogleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
-				ga.init("", "", this, "KMC_ANDROMEDA/Login", _urchinNumber, "AS3", Application.application.parameters.gaDebug == "true" ? true : false);
-				GoogleAnalyticsTracker.getInstance().sendToGA(GoogleAnalyticsConsts.LOGIN);
+				if (_urchinNumber) {
+					var ga:GoogleAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
+					ga.init("", "", this, "KMC_ANDROMEDA/Login", _urchinNumber, "AS3", Application.application.parameters.gaDebug == "true" ? true : false);
+					ga.sendToGA(GoogleAnalyticsConsts.LOGIN);
+				}
 				//Send notification to Kaltura
 				var ka:KAnalyticsTracker = KAnalyticsTracker.getInstance();
 				ka.init(_kc, "Login", VERSION, "");
-				KAnalyticsTracker.getInstance().sendEvent(KalturaStatsKmcEventType.LOGIN, "pagingInEntryTable>Manage");
+				ka.sendEvent(KalturaStatsKmcEventType.LOGIN, "pagingInEntryTable>Manage");
 
 				//Check email validator
 				if (!validateTextField(email, resourceManager.getString('kmc', 'enterEmail'), emailValidator))
@@ -295,8 +297,7 @@
 
 				SoManager.getInstance().getLocalData("login", uemail);
 
-				if (!SoManager.getInstance().checkOrFlush(GoogleAnalyticsConsts.LOGIN_FIRST_TIME)) {
-					GoogleAnalyticsTracker.getInstance().init(partner_id, uid, this, "KMC_ANDROMEDA/Login", _urchinNumber, "AS3", Application.application.parameters.gaDebug == "true" ? true : false);
+				if (_urchinNumber && !SoManager.getInstance().checkOrFlush(GoogleAnalyticsConsts.LOGIN_FIRST_TIME)) {
 					GoogleAnalyticsTracker.getInstance().sendToGA(GoogleAnalyticsConsts.LOGIN_FIRST_TIME);
 				}
 				ExternalInterface.call(_loginF, remember.selected, partner_id, subp_id, uid, ks, screenName, uemail);
@@ -359,42 +360,6 @@
 				resetPasswordSrv.send(params);
 				//TODO make V3
 			}
-
-
-//			/**
-//			 * login service returned.
-//			 * if login successful - call JS function with relevant data
-//			 * if login fault, respond.
-//			 * */
-//			private function onLoginSuccess(event:ResultEvent):void {
-//				if (event.result.result.hasOwnProperty('ks')) {
-//					// login succeeded
-//					loginF(event.result.result.partner_id, event.result.result.subp_id, event.result.result.uid, event.result.result.ks, event.result.result.screenName, event.result.result.email);
-//				}
-//				else {
-//					// see what went wrong
-//					if (event.result && event.result.error) {
-//						var errCode:String = event.result.error.num_0.code;
-//						if (errCode == "ADMIN_KUSER_NOT_FOUND") {
-//							// PS2: show ADMIN_KUSER_NOT_FOUND eror message
-//							Alert.show(resourceManager.getString('kmc', "ADMIN_KUSER_NOT_FOUND"), resourceManager.getString('kmc', "invalidLogin"));
-//						}
-//						else if (errCode == "LOGIN_RETRIES_EXCEEDED") {
-//							// PS2: show LOGIN_RETRIES_EXCEEDED eror message
-//							Alert.show(resourceManager.getString('kmc', "LOGIN_RETRIES_EXCEEDED"), resourceManager.getString('kmc', "invalidLogin"));
-//						}
-//						else if (errCode == "PASSWORD_EXPIRED") {
-//							// PS2: show PASSWORD_EXPIRED eror message and rotate cube
-//							panels.selectedSide = 'Right';
-////							Alert.show(resourceManager.getString('kmc', "PASSWORD_EXPIRED"), 
-////								resourceManager.getString('kmc', "pwdExpired"));
-//						}
-//						else {
-//							Alert.show(event.result.error.num_0.desc, resourceManager.getString('kmc', "errorOcurred"));
-//						}
-//					}
-//				}
-//			}
 
 
 			/**

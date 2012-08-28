@@ -41,7 +41,9 @@ package com.kaltura.analytics
         
         public function sendToGA(eventTracked:String):void
         {
-        	tracker.trackPageview(_kmcVersion+"/"+ eventTracked+"/"+"partner_id=" + _partnerId + "/user_id=" + _userId );
+			if (_urchinNumber) {
+        		tracker.trackPageview(_kmcVersion+"/"+ eventTracked+"/"+"partner_id=" + _partnerId + "/user_id=" + _userId );
+			}
         }
 	}
 }
