@@ -3,7 +3,12 @@
 				preloader="com.kaltura.preloaders.KmcPreloader" backgroundColor="#034F57" horizontalScrollPolicy="off"
 				verticalScrollPolicy="off" backgroundAlpha="0" backgroundGradientAlphas="0,0"
 				xmlns:components="com.pfp.components.*">
-
+	<mx:Style source="assets/kaltura.css"/>
+	
+	<mx:Metadata>
+		[ResourceBundle("login")]
+	</mx:Metadata>
+	
 	<mx:Script>
 		<![CDATA[
 			import com.kaltura.KalturaClient;
@@ -19,7 +24,6 @@
 			import com.kaltura.events.KalturaEvent;
 			import com.kaltura.types.KalturaStatsKmcEventType;
 			import com.kaltura.utils.KUtils;
-			import com.kaltura.utils.SoManager;
 			
 			import mx.controls.Alert;
 			import mx.core.UITextField;
@@ -135,6 +139,8 @@
 					panels.selectedSide = 'Top';
 				}
 				
+				setLocaleByParams();
+				
 				_loginSO = SharedObject.getLocal("KMCuser");
 				if (_loginSO.data.loginName) {
 					// assume this happens after email.creationComplete 
@@ -143,6 +149,15 @@
 				}
 			}
 
+			
+			private function setLocaleByParams():void {
+				var chain:Array = ["en_US"];
+				if (parameters.hasOwnProperty('language')) {
+					chain.unshift(parameters['language']);
+				}
+				ResourceManager.getInstance().localeChain = chain;
+			}
+			
 
 			/**
 			 * returns the protocol in which the swf was loaded.
@@ -522,19 +537,11 @@
 		]]>
 	</mx:Script>
 
-	<mx:Style source="assets/kaltura.css"/>
 
-	<mx:Metadata>
-		[ResourceBundle("kmc")]
-	</mx:Metadata>
 
 	<!-- Validators -->
 	<mx:StringValidator id="passwordValidator" required="true" property="text" minLength="1" maxLength="200"/>
 	<mx:EmailValidator id="emailValidator" required="true" property="text"/>
-
-	<!-- PS2 services -->
-	<!--	<mx:HTTPService id="loginSrv" url="{_protocol + _domain}/{KALTURA_SERVICES_URL}/adminlogin" method="POST" resultFormat="e4x"
-						showBusyCursor="true" result="onLoginSuccess( event )" fault="faultHandler( event )"/>-->
 
 	<mx:HTTPService id="resetPasswordSrv" url="{_protocol + _domain}/{KALTURA_SERVICES_URL}/resetadminpassword"
 					method="POST" resultFormat="e4x" showBusyCursor="true" result="onResetPassResult( event )"
