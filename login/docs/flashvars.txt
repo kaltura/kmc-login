@@ -1,0 +1,12 @@
+host, ie www.kaltura.com
+srvurl, ie api_v3/index.php
+urchinNumber, Google Analytics urchin number
+loginF, name of JS function to trigger after login
+errorCode, 
+hashKey, 
+language, name of locale to use (locales are compiled into login.swf)
+gaDebug == "true", turn on debugging for Google Analytics
+displayErrorFromServer == "true", always show server errors, even if alternate message exists in locale
+visibleSignup=='true', show signup link
+
+

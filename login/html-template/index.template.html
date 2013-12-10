@@ -79,7 +79,7 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 	// if we've detected an acceptable version
 	// embed the Flash Content SWF when all tests are passed
 	AC_FL_RunContent(
-			"src", "${swf}", //"https://www.kaltura.co.cc/flash/kmc/login/dev/login.swf", //
+			"src", "${swf}", 
 			"width", "${width}",
 			"height", "${height}",
 			"align", "middle",
@@ -88,20 +88,13 @@ if ( hasProductInstall && !hasRequestedVersion ) {
 						"urchinNumber=UA-12055206-1" + 
 						
 						// work with this server
-						//"&host=www.kaltura.co.cc" + 
 						"&host=www.kaltura.com" +
 						"&protocol=http" +
+						"&language=de_DE" +
 						
 						// services url:
 					 	 "&srvurl=api_v3/index.php" +
 						
-						// set-initial-password code
-					 	// "&errorCode=NEW_PASSWORD_HASH_KEY_EXPIRED" +
-					 	//"&errorCode=NEW_PASSWORD_HASH_KEY_EXPIRED" +
-	
-						// set-initial-password code
-					 	//"&hashKey=atar" +
-	
 						// show sign up link button:
 						"&visibleSignup=true",
 	
