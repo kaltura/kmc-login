@@ -11,7 +11,7 @@
 <containers:HelpTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" title="{rm.getString('windows', 'editAccessControlTitle')}" 
 	showCloseButton="true" close="closeWindow(event)" layout="vertical" creationComplete="onCreationComplete(event)"
 	width="700" height="550" xmlns:containers="com.kaltura.containers.*" xmlns:controllers="com.adobe.controllers.*" xmlns:controls="com.kaltura.controls.*"
-	verticalScrollPolicy="off" help="{navigateToURL( new URLRequest( 'http://'+rootUrl+'/'+ resourceManager.getString('kmc', 'generalHelp') ) )}" >
+	verticalScrollPolicy="off" help="{navigateToURL( new URLRequest( 'http://'+rootUrl+'/'+ resourceManager.getString('login', 'generalHelp') ) )}" >
 	<containers:states>
 		<mx:State name="newProfileState">
 			<mx:SetProperty name="title" value="{rm.getString('windows', 'newAccessControlTitle')}"/>
