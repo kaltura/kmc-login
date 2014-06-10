@@ -24,9 +24,8 @@
 			import com.kaltura.events.KalturaEvent;
 			import com.kaltura.types.KalturaStatsKmcEventType;
 			import com.kaltura.utils.KUtils;
-
+			
 			import mx.controls.Alert;
-			import mx.core.UITextField;
 			import mx.events.ValidationResultEvent;
 			import mx.resources.ResourceManager;
 			import mx.rpc.events.FaultEvent;
@@ -193,11 +192,11 @@
 				}
 
 				//Check email validator
-				if (!validateTextField(email, resourceManager.getString('login', 'enterEmail'), emailValidator))
+				if (!validateTextField(email, emailValidator))
 					return;
 
 				//Check password validator
-				if (!validateTextField(password, resourceManager.getString('login', 'enterPassword'), passwordValidator))
+				if (!validateTextField(password, passwordValidator))
 					return;
 
 				// post request:
@@ -299,18 +298,16 @@
 			 * validate both pwds are present and equal and call
 			 * the setInitialPassword service.
 			 * */
-			protected function setInitialPwd(tf1:TextInput, tf2:TextInput):void {
-				//TODO track analytics?
-
+			protected function setInitialPwd(tf1:TextInputPrompt, tf2:TextInputPrompt):void {
 				// validate
 				if (tf1.text != tf2.text) {
 					Alert.show(resourceManager.getString('login', 'pwdNoMatch'), resourceManager.getString('login', 'error'));
 					return;
 				}
-				if (!validateTextField(tf1, resourceManager.getString('login', 'enterPassword'), passwordValidator)) {
+				if (!validateTextField(tf1, passwordValidator)) {
 					return;
 				}
-				if (!validateTextField(tf2, resourceManager.getString('login', 'enterPassword'), passwordValidator)) {
+				if (!validateTextField(tf2, passwordValidator)) {
 					return;
 				}
 
@@ -329,13 +326,6 @@
 			 * log the login event and call relevant JS function
 			 * */
 			private function loginF(partner_id:String, subp_id:String, uid:String, ks:String, screenName:String, uemail:String):void {
-
-//				SoManager.getInstance().getLocalData("login", uemail);
-//
-//				if (_urchinNumber && !SoManager.getInstance().checkOrFlush(GoogleAnalyticsConsts.LOGIN_FIRST_TIME)) {
-//					GoogleAnalyticsTracker.getInstance().sendToGA(GoogleAnalyticsConsts.LOGIN_FIRST_TIME);
-//				}
-
 				// never ask JS to "remeber me" because KS is always created for 24 hours
 				ExternalInterface.call(_loginF, false, partner_id, subp_id, uid, ks, screenName, uemail);
 
@@ -345,11 +335,10 @@
 			/**
 			 * make sure the text in a text field is valid.
 			 * @param target	UITextField or TextInput
-			 * @param defaultString		the default text for the given TF
 			 * @param validator		the validator to use with this TF.
 			 * */
-			private function validateTextField(target:Object, defaultString:String, validator:Validator):Boolean {
-				cleanField(target, defaultString);
+			private function validateTextField(target:TextInputPrompt, validator:Validator):Boolean {
+				cleanField(target);
 				validator.source = target;
 
 				var vre:ValidationResultEvent = validator.validate();
@@ -361,35 +350,18 @@
 			/**
 			 * if the text in a TF is its default text, remove the contents.
 			 * @param textField		UITextField or TextInput
-			 * @param defaultText	the default text for this TF.
 			 * */
-			private function cleanField(textField:Object, defaultText:String):void {
-				//TestInput is not related to TextArea
-				if (textField is UITextField || textField is TextInput) {
-					if (textField["text"] == defaultText)
-						textField["text"] = "";
-				}
-			}
-
-
-			/**
-			 * restores the default text to the given textfield
-			 * @param textField	the textfield
-			 * @param defaultText	the text to plae in the textfield
-			 * */
-			private function restoreField(textField:Object, defaultText:String):void {
-				if (textField is UITextField || textField is TextInput) {
-					if (textField["text"] == "")
-						textField["text"] = defaultText;
-				}
+			private function cleanField(textField:TextInputPrompt):void {
+				if (textField.text == textField.promptText)
+					textField["text"] = "";
 			}
 
 
 			/**
 			 * send a request to recover pasword
 			 * */
-			private function resetPassword(tf:TextInput):void {
-				if (!validateTextField(tf, resourceManager.getString('login', 'enterEmail'), emailValidator))
+			private function resetPassword(tf:TextInputPrompt):void {
+				if (!validateTextField(tf, emailValidator))
 					return;
 
 				var params:Object = new Object();
@@ -410,13 +382,13 @@
 					Alert.show(resourceManager.getString('login', 'pwdNoMatch'), resourceManager.getString('login', 'error'));
 					return;
 				}
-				if (!validateTextField(pwd5, resourceManager.getString('login', 'enterPassword'), passwordValidator)) {
+				if (!validateTextField(pwd5, passwordValidator)) {
 					return;
 				}
-				if (!validateTextField(pwd3, resourceManager.getString('login', 'enterPassword'), passwordValidator)) {
+				if (!validateTextField(pwd3, passwordValidator)) {
 					return;
 				}
-				if (!validateTextField(pwd4, resourceManager.getString('login', 'enterPassword'), passwordValidator)) {
+				if (!validateTextField(pwd4, passwordValidator)) {
 					return;
 				}
 
@@ -502,34 +474,6 @@
 				}
 			}
 
-
-
-			/**
-			 * remove the default text from a TF and make it show '*'
-			 * */
-			protected function removeDefaultText(event:FocusEvent):void {
-				cleanField(event.target as UITextField, resourceManager.getString('login', 'enterPassword'));
-				(event.target as UITextField).displayAsPassword = true;
-			}
-
-
-			/**
-			 * restore the default text to a password TF.
-			 * */
-			protected function resetDefaultText(event:FocusEvent):void {
-				restoreField(event.target, resourceManager.getString('login', 'enterPassword'));
-				if ((event.target as UITextField).text == resourceManager.getString('login', 'enterPassword') || (event.target as UITextField).text == '') {
-					(event.target as UITextField).displayAsPassword = false;
-				}
-			}
-
-
-			/**
-			 * disable pasting text into a password TF
-			 * */
-			protected function pasteHandler(event:Event):void {
-				event.target.text = '';
-			}
 		]]>
 	</mx:Script>
 
