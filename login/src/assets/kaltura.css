@@ -4,11 +4,22 @@
 	src: url("fonts/ARIAL.TTF");
 	fontFamily: "ArialEmbedded";
 	unicode-range:
-		U+0020-U+0040,  /*Punctuation, Numbers and Symbols */
-		U+0041-U+005A,  /*Upper-Case A-Z */
-		U+005B-U+0060,  /*Punctuation and Symbols */
-		U+0061-U+007A,  /*Lower-Case a-z */
-		U+007B-U+007E ; /*Punctuation and Symbols */
+		U+0020-U+0040,  
+		U+0041-U+005A,  
+		U+005B-U+0060,  
+		U+0061-U+007A,  
+		U+007B-U+007E,  
+		/* Japanese: */
+		U+3000-U+303f,
+		U+3040-U+309f,
+		U+30a0-U+30ff,
+		U+ff00-U+ffef,
+		U+4e00-U+9faf,
+		/* Latin I: */
+		U+00A1-U+00FF,
+		U+2000-U+206F,
+		U+20A0-U+20CF,
+		U+2100-U+2183;
 }
 
 @font-face 
@@ -17,14 +28,25 @@
 	fontFamily: "ArialEmbedded";
 	font-weight:bold;
 	unicode-range:
-		U+0020-U+0040,  /*Punctuation, Numbers and Symbols */
-		U+0041-U+005A,  /*Upper-Case A-Z */
-		U+005B-U+0060,  /*Punctuation and Symbols */
-		U+0061-U+007A,  /*Lower-Case a-z */
-		U+007B-U+007E ; /*Punctuation and Symbols */
+		U+0020-U+0040,  
+		U+0041-U+005A,  
+		U+005B-U+0060,  
+		U+0061-U+007A,  
+		U+007B-U+007E,  
+		/* Japanese: */
+		U+3000-U+303f,
+		U+3040-U+309f,
+		U+30a0-U+30ff,
+		U+ff00-U+ffef,
+		U+4e00-U+9faf,
+		/* Latin I: */
+		U+00A1-U+00FF,
+		U+2000-U+206F,
+		U+20A0-U+20CF,
+		U+2100-U+2183;
 } 
 
-Application{
+Application {
 	vertical-gap: 0;
 	disabled-color: #ffffff;
 	disabled-overlay-alpha:0;
@@ -36,7 +58,7 @@ Application{
 	font-size:12;
 }
 
-TextInput{
+TextInput {
 	theme-color: #78a3b2;
 	borderColor: #B5CBD3;
 	borderStyle: solid;
@@ -44,10 +66,10 @@ TextInput{
 	cornerRadius: 3;
 }
 
-Button{
+Button {
    textIndent: 0;
-   paddingLeft: 11;
-   paddingRight: 11;
+   paddingLeft: 10;
+   paddingRight: 10;
    paddingTop: 5;
    paddingBottom: 5;
    highlightAlphas: 0.13, 0;
@@ -60,7 +82,7 @@ Button{
    themeColor: #6090a1;
 }
 
-LinkButton{ 
+LinkButton { 
 	font-weight:normal;
 	skin:ClassReference(null); 
 	text-decoration:underline;
@@ -69,8 +91,11 @@ LinkButton{
    	textSelectedColor: #66d1f4;
 }
 
-Label{ color:#333; }
-CheckBox{
+Label { 
+	color:#333; 
+}
+
+CheckBox {
 	font-weight:bold;
 	color:#333;
 	text-selected-color:#333;
@@ -83,40 +108,10 @@ CheckBox{
 	padding-bottom:-4;
 }
 
-/*RadioButton{ 
-	font-weight:bold; 
-	color:#333;
-	text-roll-over-color:#333;
-	text-selected-color:#333;
-	fillColors: #ddd, #fff, #ddd, #fff;
-	borderColor: #ccc;
-	themeColor: #888;
-	padding-bottom:-6;
-}*/
-
-/*ComboBox{
-	font-weight:bold; 
-	color:#333;
-	fillColors: #ddd, #fff, #ddd, #fff;
-	borderColor: #ccc;
-	themeColor: #888;
-}*/
-
-/*------------------------- 
-	Content - general stuff
---------------------------*/
-/*VRule{
-   strokeColor: #7fa7b6;
-   shadowColor: #9cc0cc;
-   strokeWidth: 2;
-}*/
-
-
-
 /*------------------------- 
 	Popup window
 --------------------------*/
-TitleWindow{
+TitleWindow {
    borderColor: #ffffff;
    borderAlpha: 1;
    borderThicknessLeft: 10;
@@ -140,4 +135,3 @@ TitleWindow{
 	font-weight:bold;
 }
 
-/*ControlBar{ horizontal-align:center; horizontal-gap: 12; }*/

@@ -495,18 +495,19 @@
 						keyDown="{if(event.keyCode == Keyboard.ENTER)adminLogin();}" name="Front">
 
 			<mx:VBox width="100%" height="100%" paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0">
-				<mx:HBox paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0">
+				<mx:HBox paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0" width="100%" >
 					<mx:Label width="{LBL_WIDTH}" text="{resourceManager.getString('login', 'email')}:"/>
-					<text:TextInputPrompt id="email" promptText="{resourceManager.getString('login', 'enterEmail')}" />
+					<text:TextInputPrompt id="email" width="100%"  
+										  promptText="{resourceManager.getString('login', 'enterEmail')}" />
 				</mx:HBox>
-				<mx:HBox paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0">
+				<mx:HBox paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0" width="100%" >
 					<mx:Label width="{LBL_WIDTH}" text="{resourceManager.getString('login', 'password')}:"/>
-					<text:TextInputPrompt id="password" displayAsPassword="true" 
+					<text:TextInputPrompt id="password" displayAsPassword="true" width="100%" 
 										  promptText="{resourceManager.getString('login', 'enterPassword')}" />
 				</mx:HBox>
 				<mx:CheckBox id="remember" label="{resourceManager.getString('login', 'rememberMe')}"/>
 			</mx:VBox>
-			<mx:ControlBar paddingLeft="4" paddingRight="4" paddingTop="4" paddingBottom="4">
+			<mx:ControlBar paddingLeft="4" paddingRight="4" paddingTop="4" paddingBottom="4" horizontalGap="0">
 				<mx:LinkButton label="{resourceManager.getString('login', 'forgotPassword')}"
 							   click="toggleForgotPassword()" buttonMode="true"/>
 				<mx:VRule height="10" visible="{Application.application.parameters.visibleSignup=='true'}"/>
@@ -525,7 +526,8 @@
 				<mx:Text width="95%" htmlText="{resourceManager.getString('login', 'forgotPasswordText')}"/>
 				<mx:HBox verticalAlign="middle" width="100%">
 					<mx:Label text="{resourceManager.getString('login', 'email')}:"/>
-					<text:TextInputPrompt id="email2" promptText="{resourceManager.getString('login', 'enterEmail')}" />
+					<text:TextInputPrompt id="email2" width="100%" 
+										  promptText="{resourceManager.getString('login', 'enterEmail')}" />
 				</mx:HBox>
 			</mx:VBox>
 			<mx:ControlBar paddingLeft="4" paddingRight="4" paddingTop="4" paddingBottom="4">
