@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TextInput xmlns:mx="http://www.adobe.com/2006/mxml"
-	creationComplete="{isDisplayAsPassword=displayAsPassword;restoreField()}"
-	focusIn="cleanField()" focusOut="restoreField()">
+			  creationComplete="{_isDisplayAsPassword = displayAsPassword; restoreField();}"
+			  focusIn="cleanField()" focusOut="restoreField()">
 	<mx:Script>
 		<![CDATA[
-			private var _promptText : String = "";
-			private var isDisplayAsPassword : Boolean = false;
-			
-			private function cleanField() : void
-			{
-				if(this.text == _promptText )
+			private var _promptText:String = "";
+			private var _isDisplayAsPassword:Boolean = false;
+
+
+			private function cleanField():void {
+				if (this.text == _promptText) {
 					this.text = "";
-					
-				this.displayAsPassword = isDisplayAsPassword;
+				}
+				this.displayAsPassword = _isDisplayAsPassword;
 			}
-			
-			private function restoreField() : void
-			{
-				if(this.text == "" )
-				{
+
+
+			private function restoreField():void {
+				if (this.text == "") {
 					this.text = _promptText;
 					this.displayAsPassword = false;
 				}
-				else
-					this.displayAsPassword = isDisplayAsPassword;
+				else {
+					this.displayAsPassword = _isDisplayAsPassword;
+				}
 			}
-			
-			public function set promptText( value : String ) : void
-			{
+
+
+			public function set promptText(value:String):void {
+				var oldPrompt:String = _promptText;
 				_promptText = value;
+				// if currently showing prompt, update it.
+				if (oldPrompt != '' && this.text == oldPrompt) {
+					this.text = value;
+				}
 			}
-			
-			public function get promptText() : String
-			{
+
+
+			public function get promptText():String {
 				return _promptText;
 			}
 		]]>
