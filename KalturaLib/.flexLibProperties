@@ -54,6 +54,7 @@
     <classEntry path="com.kaltura.controls.kobjecthadles.managers.HandleCursorManager"/>
     <classEntry path="com.kaltura.controls.kobjecthadles.managers.HandleDisplayManager"/>
     <classEntry path="com.kaltura.controls.tabbar.OverlappingTabBar"/>
+    <classEntry path="com.kaltura.controls.text.TextInputPrompt"/>
     <classEntry path="com.kaltura.controls.tooltips.ExtendToolTip"/>
     <classEntry path="com.kaltura.controls.tooltips.KalturaTooltip"/>
     <classEntry path="com.kaltura.controls.trashcan.Trashcan"/>
