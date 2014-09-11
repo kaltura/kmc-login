@@ -18,13 +18,17 @@
 			import com.kaltura.commands.MultiRequest;
 			import com.kaltura.commands.adminUser.AdminUserSetInitialPassword;
 			import com.kaltura.commands.adminUser.AdminUserUpdatePassword;
+			import com.kaltura.commands.permission.PermissionList;
 			import com.kaltura.commands.user.UserGetByLoginId;
 			import com.kaltura.commands.user.UserLoginByLoginId;
 			import com.kaltura.commands.user.UserResetPassword;
 			import com.kaltura.config.KalturaConfig;
 			import com.kaltura.events.KalturaEvent;
+			import com.kaltura.types.KalturaPermissionStatus;
 			import com.kaltura.types.KalturaStatsKmcEventType;
 			import com.kaltura.utils.KUtils;
+			import com.kaltura.vo.KalturaPermissionFilter;
+			import com.kaltura.vo.KalturaPermissionListResponse;
 			
 			import mx.controls.Alert;
 			import mx.events.ValidationResultEvent;
@@ -39,7 +43,7 @@
 			// =====================================================
 			// members
 			// =====================================================
-			private static const VERSION:String = "1.2.7";
+			private static const VERSION:String = "1.2.8";
 
 			private const LBL_WIDTH:Number = 120;
 
@@ -224,11 +228,20 @@
 
 				//The second call will return the user data needed for the KMC
 				var ugblId:UserGetByLoginId = new UserGetByLoginId(params.email);
-
+				
 				mr.addAction(ulblId);
 				mr.addAction(ugblId);
-
 				mr.addRequestParam("2:ks", "{1:result}");
+				
+				//the third call will check if username should be remembered
+				if (remember.selected) {
+					var filter:KalturaPermissionFilter = new KalturaPermissionFilter();
+					filter.statusEqual = KalturaPermissionStatus.ACTIVE;
+					filter.nameEqual = 'FEATURE_DISABLE_REMEMBER_ME';
+					var permst:PermissionList = new PermissionList(filter);
+					mr.addAction(permst);
+					mr.addRequestParam("3:ks", "{1:result}");
+				}
 
 				mr.addEventListener(KalturaEvent.COMPLETE, onLoginResult);
 				mr.addEventListener(KalturaEvent.FAILED, onLoginFault);
@@ -281,6 +294,13 @@
 					ka.init(_kc, "Login", VERSION, "");
 					ka.sendEvent(KalturaStatsKmcEventType.LOGIN, "pagingInEntryTable>Manage");
 
+					// if we checked for rememberme permission and we have a saved value
+					if (event.data.length > 2 && _loginSO.data.loginName){
+						if ((event.data[2] as KalturaPermissionListResponse).totalCount > 0) {
+							// we have an active "disable remember me"
+							_loginSO.clear();
+						}
+					}
 					loginF(event.data[1].partnerId, event.data[1].partnerId + "00", event.data[1].id, event.data[0], event.data[1].screenName, event.data[1].email);
 				}
 			}
