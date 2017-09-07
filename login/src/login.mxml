@@ -44,7 +44,7 @@
 			// =====================================================
 			// members
 			// =====================================================
-			private static const VERSION:String = "1.2.8";
+			private static const VERSION:String = "1.2.9";
 
 			private const LBL_WIDTH:Number = 120;
 
@@ -118,7 +118,7 @@
 				_kc = new KalturaClient(configuration);
 
 				// add context menu item
-				var item:ContextMenuItem = new ContextMenuItem("KMC LOGIN VERSION " + VERSION);
+				var item:ContextMenuItem = new ContextMenuItem("KMC Login Version " + VERSION);
 				contextMenu.customItems.push(item);
 
 				// app parameters:
