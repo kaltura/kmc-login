@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" layout="absolute"
 				preloader="com.kaltura.preloaders.KmcPreloader" backgroundColor="#034F57" horizontalScrollPolicy="off"
 				verticalScrollPolicy="off" backgroundAlpha="0" backgroundGradientAlphas="0,0"
-				xmlns:components="com.pfp.components.*" xmlns:text="com.kaltura.controls.text.*">
+				xmlns:components="com.pfp.components.*" xmlns:text="com.kaltura.controls.text.*" xmlns:validators="com.kaltura.validators.*">
 	<mx:Style source="assets/kaltura.css"/>
 
 	<mx:Metadata>
