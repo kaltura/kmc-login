@@ -101,6 +101,7 @@
     <classEntry path="com.kaltura.validators.IPAddressValidator"/>
     <classEntry path="com.kaltura.validators.ListValidator"/>
     <classEntry path="com.kaltura.validators.URLValidator"/>
+    <classEntry path="com.kaltura.validators.EmailValidator"/>
     <classEntry path="com.kaltura.vo.AccessControlProfileVO"/>
     <classEntry path="com.kaltura.vo.KMCMetadataProfileVO"/>
     <classEntry path="com.kaltura.vo.MediaMetaDataVO"/>
