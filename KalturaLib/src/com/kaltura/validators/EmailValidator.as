@@ -3,6 +3,7 @@ package com.kaltura.validators
 	import mx.validators.Validator;
 	import mx.validators.ValidationResult;
 
+	/* Email validator, based on Flex EmailValidator, but without the "domain must end in a top level domain name that has 2, 3, 4, or 6 characters" validation. */
 	public class EmailValidator extends Validator
 	{
 		//--------------------------------------------------------------------------
@@ -57,7 +58,6 @@ package com.kaltura.validators
 			// If IP domain, then must follow [x.x.x.x] format
 			// Can not have continous periods.
 			// Must have at least one period.
-			// Must end in a top level domain name that has 2, 3, 4, or 6 characters.
 			
 			var emailStr:String = String(value);
 			var username:String = "";
