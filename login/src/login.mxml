@@ -29,6 +29,7 @@
 			import com.kaltura.utils.KUtils;
 			import com.kaltura.vo.KalturaPermissionFilter;
 			import com.kaltura.vo.KalturaPermissionListResponse;
+			import com.kaltura.validators.EmailValidator;
 			
 			import mx.controls.Alert;
 			import mx.events.ValidationResultEvent;
@@ -501,7 +502,7 @@
 
 	<!-- Validators -->
 	<mx:StringValidator id="passwordValidator" required="true" property="text" minLength="1" maxLength="200"/>
-	<mx:EmailValidator id="emailValidator" required="true" property="text"/>
+	<validators:EmailValidator id="emailValidator" required="true" property="text"/>
 
 
 	<!-- UI -->
